@@ -1,0 +1,78 @@
+TEMA PROIECTAREA ALGORITMILOR - PETRE ALEXANDRA 315CB
+
+------------------------------PROBLEMA 1-----------------------------------
+
+  Am observat că din șirul de numere fiecare jucător va alege întotdeauna numărul
+mai mare pentru a maximiza diferența dintre suma elementelor lui și cea a adversarului
+Am aplicat o tehnică greedy pentru rezolvare. Am sortat vectorul de numere,
+iar la o singură parcurgere am calculat suma fiecarui jucător. Rezultatul
+problemei era diferenta dintre suma lui Tuzgu și suma Ritzei.
+
+
+------------------------------PROBLEMA 2-----------------------------------
+
+  Problema 2 am rezolvat-o cu programare dinamică, am folosit o matrice
+de dimensiune k linii și n coloane; Am stocat în fiecare câmp diferența dintre
+scorul lui Tuzgu și al Ritzei. Liniile sunt de la 0 la k iar fiecare numar de linie
+reprezintă câte elemente se pot scoate. Pentru fiecare câmp se alegea maximul
+dintre diferența în cazul in care se păstrează în șir numărul, sau dacă este eliminat.
+Am observat ca dacă suntem pe pas impar scorul este în defavoarea lui Tuzgu
+de aceea este scăzut, altfel se adună.
+
+IMPLEMENTARE:
+  --Rezultatul final se stochează în colțul din dreapta jos, se parcuge matricea
+de la început,( 0 - k și i - n).
+pasul = coloana j - k
+pentru k = 1 pentru primul element  [1][0] dacă se elimina primul element
+            din șir, atunci rezulatul problemei este 0, la următorul pas
+            se decide dacă păstrează elementul curent [1][1] sau îl elimină
+            și îl păstrează pe cel precedent.
+
+La pas impar jocul este în favoare adversarului, dacă pasul e par este invers.
+
+ex : Pentru k = 2 n = 4
+     șirul : [19, 7, 6, 1]
+
+    numerele:       19             7            6                    1
+    linia k = 0:    19(+)        12(-)         18(+)                17(-)
+    linia k = 1:    0        max(19, 0+7)     max(12,19-6)     max(18,13+1)
+    linia k = 2:    0             0           max(19,0+6)      max(13,19-1)
+
+
+
+------------------------------PROBLEMA 3-----------------------------------
+
+  Am rezolvat problema 3 cu programare dinamică, am facut la început suma
+totală a elementelor, pentru ca funcția maxim, întoarce un long și reprezintă
+suma tuturor elementelor lui Tuzgu, la terminarea jocului, știind ca amândoi joacă
+optim.
+
+STRATEGIE:
+
+- Jucatorul la fiecare pas poate să aleagă între start și final:
+  * dacă alege start, adversarul va avea de ales între start+1 și final,
+    recursiv jucatorul la urmatoare iterație, va putea alege în funcție de alegerea
+    adversaruli
+    -- dacă adversarul alege start+1, jucatorul va alege între [start+2, final]
+    -- dacă adversarul alege final, jucătorul va putea alege între [start+1, final-1]
+
+  * dacă alege final, adversarul va avea de ales între start și final-1, la urmatoarea
+    tură jucătorul va putea alege :
+    -- dacă adversarul alege start, jucătorul va avea elementele de pe
+      pozițiile [start+1, final-1]
+    -- dacă adversarul alege final-1, jucatorul va alege dintre [start+1, final-2]
+La fiecare tură jucătorii jocă optim, deci ficare va încerca să
+își maximiza diferența dintre scorul său și cel al adversarului, deci va alege
+maximul în funcție de ce va putea alege adversarul la următoarea tură, dar
+și în funcție de ce va avea el (jucatorul curent) după tura adversarului.
+(tehnică min-max).
+Deci jucărotrul curent va încerca mereu să facă alegerea astfel încât să îl
+facă pe adversar să aleaga minumul de pe pozițiile rămase.
+
+IMPLEMENTARE:
+
+  -- Am folosit o matrice, care calcula pe parcurs suma primului jucător în funcție
+de alegerea optimă, rezultatul final, se stocheaza în colțul de sus dreapta.
+Se parcurg elementele se fac sume parțiale în funcție de fiecare capăt ales, și
+se calculează minimul între opțiunile viitoare alea jucatorului, iar in final
+se alege maximul pentru tura respectivă.
